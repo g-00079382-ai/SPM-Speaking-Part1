@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SPM Speaking Part 1 — Random Question Wheel</title>
+<style>
+:root{--navy:#7776a8;--blue:#8bb8d9;--gold:#f6dcae;--paper:#fffafd;--ink:#41445b}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:linear-gradient(135deg,#f1eaff,#eaf7f4 52%,#fff4e8);color:var(--ink);min-height:100vh}
+header{background:linear-gradient(120deg,#a8a7d8,#91bfd0);color:#fff;padding:22px 16px;text-align:center}
+header h1{margin:0;font-size:clamp(1.4rem,4vw,2.3rem)}
+header p{margin:8px 0 0;color:#fffaff}
+main{max-width:1050px;margin:0 auto;padding:20px 14px 40px}
+.layout{display:grid;grid-template-columns:minmax(260px,360px) 1fr;gap:20px;align-items:stretch}
+.card{background:#fffdfd;border-radius:22px;padding:20px;box-shadow:0 8px 28px #7c739018;border:1px solid #e6dff0}
+.wheel-wrap{display:flex;flex-direction:column;align-items:center;justify-content:center}
+.wheel-box{width:min(76vw,310px);position:relative;aspect-ratio:1;margin:8px auto 18px}
+canvas{width:100%;height:100%;display:block;filter:drop-shadow(0 8px 10px #19365324)}
+.pointer{position:absolute;z-index:2;top:-6px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:18px solid transparent;border-right:18px solid transparent;border-top:34px solid #e9a0b4;filter:drop-shadow(0 2px 2px #3335)}
+button,select{font:inherit;border-radius:12px;border:0;padding:12px 15px}
+button{cursor:pointer;font-weight:700;transition:transform .12s,opacity .12s}
+button:active{transform:scale(.98)}
+.primary{background:#a7c9e8;color:#283d58;box-shadow:0 4px 0 #83abcF}
+.secondary{background:#eee9fa;color:#55577f;border:1px solid #d9d0ed}
+.gold{background:#f8dfb5;color:#5b4c4b;box-shadow:0 4px 0 #e7c999}
+.controls{display:flex;gap:9px;flex-wrap:wrap;justify-content:center}
+label{font-weight:700;display:block;margin:0 0 8px}
+select{width:100%;background:#f7fbff;border:1px solid #c9d9e8;color:var(--ink)}
+.question-area{display:flex;flex-direction:column;gap:15px}
+.topline{display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap}
+.badge{display:inline-block;background:#e5f2f8;color:#596f8e;padding:7px 11px;border-radius:99px;font-size:.9rem;font-weight:700}
+.counter{font-size:.92rem;color:#60748a}
+.question-card{background:linear-gradient(135deg,#f3edff,#fff4e9);border:2px solid #e2d8f2;border-radius:18px;padding:24px 20px;min-height:205px;display:flex;flex-direction:column;justify-content:center}
+.question-card .num{font-size:1rem;font-weight:700;color:#8c9dc9}
+.question-card h2{font-size:clamp(1.45rem,3.2vw,2.1rem);line-height:1.3;margin:13px 0 0;color:#102d50}
+.prompt{margin:0;color:#526980}
+.challenge{background:#f6f2fb;border-radius:14px;padding:14px 16px}
+.sample-answer{background:#edf8f0;border:1px solid #cde8d4;border-radius:14px;padding:14px 16px;color:#3e6650;line-height:1.5}
+.sample-answer h3{margin:0 0 7px;font-size:1rem}
+.sample-answer p{margin:0;font-size:1.05rem}
+.challenge h3{margin:0 0 8px;font-size:1rem}
+.challenge p{margin:0;line-height:1.5}
+.actions{display:flex;gap:10px;flex-wrap:wrap}
+.actions button{flex:1;min-width:130px}
+small.note{display:block;color:#7b8297;line-height:1.5;margin-top:12px}
+details{margin-top:22px}
+summary{cursor:pointer;font-weight:700;padding:10px 0}
+.question-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:8px;margin-top:12px}
+.qitem{border:1px solid #e8e0ef;border-radius:10px;padding:9px 11px;background:#fffcff;text-align:left;color:var(--ink);font-weight:400}
+.qitem:hover{background:#f0eaff}
+footer{text-align:center;color:#60748a;font-size:.85rem;padding:0 15px 24px}
+@media(max-width:760px){.layout{grid-template-columns:1fr}.wheel-box{width:min(68vw,275px)}.card{padding:16px}.question-card{min-height:170px}}
+</style>
+</head>
+<body>
+<header>
+  <h1>🎤 SPM Speaking Part 1</h1>
+  <p>100-question random wheel · Spin, speak, and level up your answer!</p>
+</header>
+<main>
+  <div class="layout">
+    <section class="card wheel-wrap">
+      <div style="text-align:center">
+        <span class="badge">RANDOM QUESTION WHEEL</span>
+        <p class="prompt" style="margin-top:9px">Choose a topic or use all 100 questions.</p>
+      </div>
+      <div class="wheel-box">
+        <div class="pointer"></div>
+        <canvas id="wheel" width="600" height="600" aria-label="Random question wheel"></canvas>
+      </div>
+      <div class="controls">
+        <button class="primary" id="spinBtn">🎡 SPIN THE WHEEL</button>
+        <button class="secondary" id="randomBtn">Pick for me</button>
+      </div>
+      <small class="note">Tip for Google Meet: share this tab, spin the wheel, then invite a student to answer aloud.</small>
+    </section>
+    <section class="card question-area">
+      <div class="topline">
+        <span class="badge" id="categoryBadge">Ready to play</span>
+        <span class="counter" id="counter">100 questions available</span>
+      </div>
+      <div class="question-card" aria-live="polite">
+        <div class="num" id="questionNumber">YOUR QUESTION</div>
+        <h2 id="questionText">Spin the wheel to get started!</h2>
+      </div>
+      <div class="challenge">
+        <h3>🚀 Answer upgrade challenge</h3>
+        <p><strong>1. Answer</strong> the question directly. <strong>2. Explain</strong> why. <strong>3. Develop</strong> your answer with a detail or example.</p>
+      </div>
+      <div class="actions">
+        <button class="gold" id="nextBtn">Next question →</button>
+        <button class="secondary" id="repeatBtn">Show speaking structure</button>
+        <button class="secondary" id="sampleBtn" aria-expanded="false">Show speaking sample</button>
+      </div>
+      <div id="structure" class="challenge" hidden>
+        <h3>Speaking structure</h3>
+        <p><strong>My answer is…</strong> → <strong>because…</strong> → <strong>For example / Also…</strong></p>
+        <p style="margin-top:7px">Don't memorise a script. Use the structure to develop your own ideas naturally.</p>
+      </div>
+      <div class="sample-answer" id="sampleAnswer" hidden aria-live="polite">
+        <h3>💬 Speaking sample</h3>
+        <p id="sampleAnswerText">Choose a question to view its sample answer.</p>
+      </div>
+      <div>
+        <label for="categorySelect">Filter questions by topic</label>
+        <select id="categorySelect">
+          <option value="All">All topics (100 questions)</option>
+        </select>
+      </div>
+      <div class="actions">
+        <button class="secondary" id="resetBtn">Reset used questions</button>
+        <button class="secondary" id="showListBtn">Browse all questions ↓</button>
+      </div>
+    </section>
+  </div>
+  <details id="allQuestions">
+    <summary>Browse all 100 questions</summary>
+    <div class="question-list" id="questionList"></div>
+  </details>
+</main>
+<footer>Made for interactive SPM English speaking practice · Questions based on the supplied worksheet.<br><strong>Prepared by: Teacher Ashiqin Roslan</strong></footer>
+<script>
+const questions = [
+[1,"About Yourself","What's your name?"],
+[2,"About Yourself","Where do you live?"],
+[3,"About Yourself","Where do you come from?"],
+[4,"About Yourself","How do you come to school?"],
+[5,"About Yourself","What do you like about your hometown?"],
+[6,"About Yourself","What do you usually do after school?"],
+[7,"About Yourself","What is your favourite day of the week?"],
+[8,"About Yourself","What is your favourite month?"],
+[9,"About Yourself","What are you good at?"],
+[10,"About Yourself","What would you like to be in the future?"],
+[11,"Family & Friends","How many people are there in your family?"],
+[12,"Family & Friends","Do you have any brothers or sisters?"],
+[13,"Family & Friends","Who are you closest to in your family?"],
+[14,"Family & Friends","What do you usually do with your family?"],
+[15,"Family & Friends","Who is your best friend?"],
+[16,"Family & Friends","What do you like about your best friend?"],
+[17,"Family & Friends","What do you usually do with your friends?"],
+[18,"Family & Friends","What makes a good friend?"],
+[19,"School & Teachers","What is your favourite subject?"],
+[20,"School & Teachers","Which subject do you find difficult?"],
+[21,"School & Teachers","Who is your favourite teacher?"],
+[22,"School & Teachers","What subject does your favourite teacher teach?"],
+[23,"School & Teachers","What do you like about your favourite teacher?"],
+[24,"School & Teachers","How do you show your appreciation to your teacher?"],
+[25,"School & Teachers","What is your favourite place in your school?"],
+[26,"School & Teachers","What is your favourite place to enjoy?"],
+[27,"School & Teachers","What school activity do you enjoy?"],
+[28,"School & Teachers","How do you prepare for an examination?"],
+[29,"Hobbies & Free Time","What is your hobby?"],
+[30,"Hobbies & Free Time","What do you like to do in your free time?"],
+[31,"Hobbies & Free Time","Do you like reading?"],
+[32,"Hobbies & Free Time","What kind of music do you like?"],
+[33,"Hobbies & Free Time","Do you like watching films?"],
+[34,"Hobbies & Free Time","What is your favourite game?"],
+[35,"Hobbies & Free Time","Do you enjoy playing sports?"],
+[36,"Hobbies & Free Time","What do you usually do at weekends?"],
+[37,"Food & Lifestyle","What is your favourite food?"],
+[38,"Food & Lifestyle","What is your favourite drink?"],
+[39,"Food & Lifestyle","Do you like cooking?"],
+[40,"Food & Lifestyle","What food do you dislike?"],
+[41,"Food & Lifestyle","Do you prefer eating at home or eating out?"],
+[42,"Food & Lifestyle","How do you stay healthy?"],
+[43,"Technology & Online Activities","How often do you use your smartphone?"],
+[44,"Technology & Online Activities","What do you use the Internet for?"],
+[45,"Technology & Online Activities","Do you like online shopping?"],
+[46,"Technology & Online Activities","What is your favourite social media platform?"],
+[47,"Technology & Online Activities","Do you think technology is important?"],
+[48,"Travel & Future","Do you like travelling?"],
+[49,"Travel & Future","Where would you like to go on holiday?"],
+[50,"Travel & Future","What is your dream for the future?"],
+[51,"Friends & Family","Who is your best friend?"],
+[52,"Friends & Family","What qualities do you look for in a friend?"],
+[53,"Friends & Family","What do you usually do with your friends?"],
+[54,"Friends & Family","How do you celebrate special occasions with your family?"],
+[55,"Friends & Family","How often do you spend time with your family?"],
+[56,"Friends & Family","What do you enjoy doing with your parents?"],
+[57,"Friends & Family","How do you help your family members?"],
+[58,"Friends & Family","What do you usually do when you have a problem?"],
+[59,"Friends & Family","How do you keep in touch with friends who live far away?"],
+[60,"Friends & Family","Why is it important to have good friends?"],
+[61,"Shopping & Money","Do you enjoy shopping? Why or why not?"],
+[62,"Shopping & Money","Where do you usually shop?"],
+[63,"Shopping & Money","Do you prefer online shopping or shopping in physical stores?"],
+[64,"Shopping & Money","What do you consider before buying something?"],
+[65,"Shopping & Money","What do you usually spend your pocket money on?"],
+[66,"Shopping & Money","Do you save money regularly?"],
+[67,"Shopping & Money","Have you ever bought something you regretted buying?"],
+[68,"Shopping & Money","What kind of gift would you like to buy for a friend?"],
+[69,"Shopping & Money","How can students avoid wasting money?"],
+[70,"Shopping & Money","Would you prefer to buy a cheap product or a high-quality product?"],
+[71,"Food & Dining","What is your favourite food?"],
+[72,"Food & Dining","What do you usually eat for lunch?"],
+[73,"Food & Dining","Do you prefer eating at home or eating out?"],
+[74,"Food & Dining","What is your favourite Malaysian dish?"],
+[75,"Food & Dining","Can you cook any dishes?"],
+[76,"Food & Dining","Who usually prepares meals in your home?"],
+[77,"Food & Dining","How often do you eat at restaurants?"],
+[78,"Food & Dining","What healthy food do you enjoy eating?"],
+[79,"Food & Dining","Have you ever tried food from another country?"],
+[80,"Food & Dining","What food would you recommend to a visitor to your hometown?"],
+[81,"Sports & Exercise","What is your favourite sport?"],
+[82,"Sports & Exercise","How often do you exercise?"],
+[83,"Sports & Exercise","Do you prefer playing sports or watching sports?"],
+[84,"Sports & Exercise","Who do you usually exercise with?"],
+[85,"Sports & Exercise","What physical activity do you do at school?"],
+[86,"Sports & Exercise","Have you ever taken part in a sports competition?"],
+[87,"Sports & Exercise","What sport would you like to learn?"],
+[88,"Sports & Exercise","Where do you usually exercise?"],
+[89,"Sports & Exercise","How can exercise benefit students?"],
+[90,"Sports & Exercise","What can schools do to encourage students to exercise?"],
+[91,"Technology & Everyday Life","What electronic device do you use most often?"],
+[92,"Technology & Everyday Life","How often do you use your mobile phone?"],
+[93,"Technology & Everyday Life","What do you usually do on the Internet?"],
+[94,"Technology & Everyday Life","How does technology help you with your studies?"],
+[95,"Technology & Everyday Life","Do you prefer reading printed books or reading on a screen?"],
+[96,"Technology & Everyday Life","What is your favourite social media platform?"],
+[97,"Technology & Everyday Life","How do you stay safe when using the Internet?"],
+[98,"Technology & Everyday Life","Have you ever used an educational app?"],
+[99,"Technology & Everyday Life","What would you do if you lost access to your mobile phone for a day?"],
+[100,"Technology & Everyday Life","How can students use technology responsibly?"]
+];
+const sampleAnswers = ["My name is Aina, and I am a secondary school student.", "I live in Kuching with my family.", "I come from Malaysia.", "I usually travel to school by car.", "I like my hometown because the people are friendly.", "After school, I usually finish my homework and relax.", "My favourite day is Saturday because I have more free time.", "My favourite month is December because I enjoy the holidays.", "I am good at drawing because I enjoy being creative.", "I would like to be a teacher in the future.", "There are five people in my family.", "Yes, I have one brother and one sister.", "I am closest to my mother because I can talk to her easily.", "I usually watch television or have dinner with my family.", "My best friend is Sara because she is kind and helpful.", "I like my best friend because she always supports me.", "I usually chat and play games with my friends.", "A good friend should be honest, kind, and trustworthy.", "My favourite subject is English because I enjoy learning languages.", "I find Mathematics difficult because some topics are challenging.", "My favourite teacher is my English teacher because she is encouraging.", "My favourite teacher teaches English.", "I like my favourite teacher because she explains lessons clearly.", "I show appreciation to my teacher by thanking her and working hard.", "My favourite place in school is the library because it is peaceful.", "My favourite place to relax is the school garden.", "I enjoy school sports activities because they are fun and healthy.", "I prepare for examinations by revising my notes and doing practice questions.", "My hobby is reading because I enjoy discovering new ideas.", "In my free time, I usually listen to music or watch videos.", "Yes, I like reading because it helps me learn new things.", "I like pop music because it is catchy and relaxing.", "Yes, I enjoy watching films, especially comedies.", "My favourite game is badminton because it keeps me active.", "Yes, I enjoy playing sports because they are fun and healthy.", "At weekends, I usually rest, do homework, and spend time with my family.", "My favourite food is nasi lemak because I love its rich flavour.", "My favourite drink is iced lemon tea because it is refreshing.", "Yes, I like cooking because I enjoy trying simple recipes.", "I dislike bitter gourd because I do not enjoy its taste.", "I prefer eating at home because it is comfortable and affordable.", "I stay healthy by exercising regularly and eating balanced meals.", "I use my smartphone every day to study and communicate with friends.", "I use the Internet to find information and complete schoolwork.", "Yes, I like online shopping because it is convenient.", "My favourite social media platform is YouTube because I enjoy watching useful videos.", "Yes, technology is important because it makes learning and communication easier.", "Yes, I like travelling because I enjoy exploring new places.", "I would like to visit Japan because I want to experience its culture.", "My dream is to have a successful career and make my family proud.", "My best friend is Sara because she is caring and reliable.", "I look for kindness, honesty, and a good sense of humour in a friend.", "I usually talk, eat, or play games with my friends.", "We celebrate special occasions by having a meal together.", "I spend time with my family almost every day, especially at dinner.", "I enjoy chatting with my parents because they give me good advice.", "I help my family by doing household chores.", "When I have a problem, I talk to someone I trust.", "I keep in touch with distant friends through messages and video calls.", "Good friends are important because they support us during difficult times.", "Yes, I enjoy shopping because I like finding useful things.", "I usually shop at nearby malls or supermarkets.", "I prefer online shopping because it is convenient and offers many choices.", "Before buying something, I compare the price, quality, and usefulness.", "I usually spend my pocket money on food and school supplies.", "Yes, I save money regularly so I can buy things I need later.", "Yes, I once bought an item I regretted because I did not need it.", "I would buy my friend a book because it is thoughtful and useful.", "Students can avoid wasting money by making a budget and comparing prices.", "I prefer a high-quality product because it usually lasts longer.", "My favourite food is chicken rice because it is tasty and filling.", "I usually eat rice with chicken or vegetables for lunch.", "I prefer eating at home because home-cooked food is healthier.", "My favourite Malaysian dish is laksa because I love its flavourful broth.", "Yes, I can cook simple dishes such as fried rice.", "My parents usually prepare meals at home.", "I eat at restaurants about once or twice a month.", "I enjoy eating fruits and vegetables because they help me stay healthy.", "Yes, I have tried Japanese food, and I enjoyed the sushi.", "I would recommend laksa to visitors because it is a popular local dish.", "My favourite sport is badminton because it is exciting and energetic.", "I exercise two or three times a week to stay fit.", "I prefer playing sports because I enjoy being active.", "I usually exercise with my friends because it is more fun.", "At school, I usually take part in physical education activities.", "Yes, I have taken part in a school sports competition.", "I would like to learn swimming because it is useful and enjoyable.", "I usually exercise at the school field or nearby park.", "Exercise benefits students by improving their health and reducing stress.", "Schools can encourage exercise by organising fun sports and outdoor activities.", "The electronic device I use most often is my smartphone.", "I use my mobile phone every day for learning and communication.", "I usually use the Internet to study, watch videos, and chat with friends.", "Technology helps me study by giving me quick access to learning resources.", "I prefer printed books because they are easier on my eyes.", "My favourite social media platform is YouTube because I can learn and relax.", "I stay safe online by using strong passwords and avoiding suspicious links.", "Yes, I have used educational apps to practise English and Mathematics.", "If I lost my phone for a day, I would read, exercise, and spend time with family.", "Students can use technology responsibly by protecting their privacy and limiting screen time."];
+const colors=["#ff6b7a","#ffb547","#55c878","#49a9ed","#a78bfa","#f48fb1","#4dc9c0","#f28c52"];
+const canvas=document.getElementById('wheel'),ctx=canvas.getContext('2d');
+const categorySelect=document.getElementById('categorySelect');
+const categories=[...new Set(questions.map(q=>q[1]))];
+categories.forEach(c=>{const o=document.createElement('option');o.value=c;o.textContent=c;categorySelect.appendChild(o)});
+let current=null,used=new Set(),rotation=0,spinning=false;
+function pool(){return questions.filter(q=>categorySelect.value==="All"||q[1]===categorySelect.value)}
+function drawWheel(){
+ const list=pool(),n=list.length,cx=300,cy=300,r=280;ctx.clearRect(0,0,600,600);
+ if(!n)return;const step=2*Math.PI/n;
+ for(let i=0;i<n;i++){
+  const start=rotation+i*step-Math.PI/2,end=start+step;
+  ctx.beginPath();ctx.moveTo(cx,cy);ctx.arc(cx,cy,r,start,end);ctx.closePath();
+  ctx.fillStyle=colors[i%colors.length];ctx.fill();ctx.strokeStyle="#fff";ctx.lineWidth=2;ctx.stroke();
+  if(n<=36){ctx.save();ctx.translate(cx,cy);ctx.rotate(start+step/2);ctx.textAlign="right";ctx.fillStyle="#132d49";ctx.font="bold 17px Arial";ctx.fillText(String(list[i][0]),r-18,6);ctx.restore()}
+ }
+ ctx.beginPath();ctx.arc(cx,cy,43,0,Math.PI*2);ctx.fillStyle="#fff";ctx.fill();ctx.strokeStyle="#d9e7f5";ctx.lineWidth=5;ctx.stroke();
+ ctx.fillStyle="#0b2c52";ctx.textAlign="center";ctx.font="bold 18px Arial";ctx.fillText("SPM",cx,cy+6);
+}
+function showQuestion(q){
+ if(!q)return;current=q;
+ document.getElementById('categoryBadge').textContent=q[1];
+ document.getElementById('questionNumber').textContent='QUESTION '+q[0];
+ document.getElementById('questionText').textContent=q[2];
+ document.getElementById('sampleAnswerText').textContent=sampleAnswers[q[0]-1] || 'Try answering in one complete sentence.';
+ document.getElementById('sampleAnswer').hidden=true;
+ document.getElementById('sampleBtn').textContent='Show speaking sample';
+ document.getElementById('sampleBtn').setAttribute('aria-expanded','false');
+ used.add(q[0]);updateCounter();
+}
+function updateCounter(){const p=pool();document.getElementById('counter').textContent=`${p.length-used.size} unused · ${p.length} in this topic`; }
+function chooseRandom(){
+ const p=pool();if(!p.length)return;
+ let available=p.filter(q=>!used.has(q[0]));
+ if(!available.length){used.clear();available=p;document.getElementById('counter').textContent="All questions used — starting a fresh round!"}
+ const q=available[Math.floor(Math.random()*available.length)];showQuestion(q);drawWheel();
+}
+function spin(){
+ if(spinning)return;const p=pool();if(!p.length)return;
+ let available=p.filter(q=>!used.has(q[0]));if(!available.length){used.clear();available=p}
+ const chosen=available[Math.floor(Math.random()*available.length)];
+ spinning=true;document.getElementById('spinBtn').disabled=true;
+ const targetIndex=p.findIndex(q=>q[0]===chosen[0]),step=2*Math.PI/p.length;
+ // Pointer is at top. Land selected slice midpoint at top.
+ const desired=-(targetIndex+.5)*step;
+ let delta=((desired-rotation)%(2*Math.PI)+2*Math.PI)%(2*Math.PI);
+ const start=rotation,finish=rotation+Math.PI*2*5+delta,duration=2600,t0=performance.now();
+ function frame(now){const t=Math.min(1,(now-t0)/duration),ease=1-Math.pow(1-t,4);rotation=start+(finish-start)*ease;drawWheel();
+  if(t<1)requestAnimationFrame(frame);else{rotation=((rotation%(2*Math.PI))+2*Math.PI)%(2*Math.PI);spinning=false;document.getElementById('spinBtn').disabled=false;showQuestion(chosen);drawWheel()}}
+ requestAnimationFrame(frame);
+}
+document.getElementById('spinBtn').addEventListener('click',spin);
+document.getElementById('randomBtn').addEventListener('click',chooseRandom);
+document.getElementById('nextBtn').addEventListener('click',chooseRandom);
+document.getElementById('repeatBtn').addEventListener('click',()=>{const s=document.getElementById('structure');s.hidden=!s.hidden});
+document.getElementById('sampleBtn').addEventListener('click',()=>{const s=document.getElementById('sampleAnswer');s.hidden=!s.hidden;const open=!s.hidden;document.getElementById('sampleBtn').textContent=open?'Hide speaking sample':'Show speaking sample';document.getElementById('sampleBtn').setAttribute('aria-expanded',String(open));});
+document.getElementById('resetBtn').addEventListener('click',()=>{used.clear();updateCounter();});
+categorySelect.addEventListener('change',()=>{used.clear();drawWheel();updateCounter();document.getElementById('categoryBadge').textContent='Topic selected';document.getElementById('questionNumber').textContent='YOUR QUESTION';document.getElementById('questionText').textContent='Spin the wheel to get started!';document.getElementById('sampleAnswerText').textContent='Choose a question to view its sample answer.';document.getElementById('sampleAnswer').hidden=true;document.getElementById('sampleBtn').textContent='Show speaking sample';document.getElementById('sampleBtn').setAttribute('aria-expanded','false');current=null});
+document.getElementById('showListBtn').addEventListener('click',()=>{const d=document.getElementById('allQuestions');d.open=true;d.scrollIntoView({behavior:'smooth',block:'start'})});
+const listEl=document.getElementById('questionList');
+questions.forEach(q=>{const b=document.createElement('button');b.className='qitem';b.textContent=`Q${q[0]} · ${q[1]} — ${q[2]}`;b.addEventListener('click',()=>{showQuestion(q);document.querySelector('.question-card').scrollIntoView({behavior:'smooth',block:'center'})});listEl.appendChild(b)});
+drawWheel();updateCounter();
+</script>
+</body>
+</html>

@@ -56,14 +56,14 @@ footer{text-align:center;color:#60748a;font-size:.85rem;padding:0 15px 24px}
 <body>
 <header>
   <h1>🎤 SPM Speaking Part 1</h1>
-  <p>100-question random wheel · Spin, speak, and level up your answer!</p>
+  <p>73-question random wheel · Spin, speak, and level up your answer!</p>
 </header>
 <main>
   <div class="layout">
     <section class="card wheel-wrap">
       <div style="text-align:center">
         <span class="badge">RANDOM QUESTION WHEEL</span>
-        <p class="prompt" style="margin-top:9px">Choose a topic or use all 100 questions.</p>
+        <p class="prompt" style="margin-top:9px">Choose a topic or use all 73 questions.</p>
       </div>
       <div class="wheel-box">
         <div class="pointer"></div>
@@ -78,7 +78,7 @@ footer{text-align:center;color:#60748a;font-size:.85rem;padding:0 15px 24px}
     <section class="card question-area">
       <div class="topline">
         <span class="badge" id="categoryBadge">Ready to play</span>
-        <span class="counter" id="counter">100 questions available</span>
+        <span class="counter" id="counter">73 questions available</span>
       </div>
       <div class="question-card" aria-live="polite">
         <div class="num" id="questionNumber">YOUR QUESTION</div>
@@ -105,7 +105,7 @@ footer{text-align:center;color:#60748a;font-size:.85rem;padding:0 15px 24px}
       <div>
         <label for="categorySelect">Filter questions by topic</label>
         <select id="categorySelect">
-          <option value="All">All topics (100 questions)</option>
+          <option value="All">All topics (73 questions)</option>
         </select>
       </div>
       <div class="actions">
@@ -115,115 +115,162 @@ footer{text-align:center;color:#60748a;font-size:.85rem;padding:0 15px 24px}
     </section>
   </div>
   <details id="allQuestions">
-    <summary>Browse all 100 questions</summary>
+    <summary>Browse all 73 questions</summary>
     <div class="question-list" id="questionList"></div>
   </details>
 </main>
 <footer>Made for interactive SPM English speaking practice · Questions based on the supplied worksheet.<br><strong>Prepared by: Teacher Ashiqin Roslan</strong></footer>
 <script>
 const questions = [
-[1,"About Yourself","What's your name?"],
-[2,"About Yourself","Where do you live?"],
-[3,"About Yourself","Where do you come from?"],
-[4,"About Yourself","How do you come to school?"],
-[5,"About Yourself","What do you like about your hometown?"],
-[6,"About Yourself","What do you usually do after school?"],
-[7,"About Yourself","What is your favourite day of the week?"],
-[8,"About Yourself","What is your favourite month?"],
-[9,"About Yourself","What are you good at?"],
-[10,"About Yourself","What would you like to be in the future?"],
-[11,"Family & Friends","How many people are there in your family?"],
-[12,"Family & Friends","Do you have any brothers or sisters?"],
-[13,"Family & Friends","Who are you closest to in your family?"],
-[14,"Family & Friends","What do you usually do with your family?"],
-[15,"Family & Friends","Who is your best friend?"],
-[16,"Family & Friends","What do you like about your best friend?"],
-[17,"Family & Friends","What do you usually do with your friends?"],
-[18,"Family & Friends","What makes a good friend?"],
-[19,"School & Teachers","What is your favourite subject?"],
-[20,"School & Teachers","Which subject do you find difficult?"],
-[21,"School & Teachers","Who is your favourite teacher?"],
-[22,"School & Teachers","What subject does your favourite teacher teach?"],
-[23,"School & Teachers","What do you like about your favourite teacher?"],
-[24,"School & Teachers","How do you show your appreciation to your teacher?"],
-[25,"School & Teachers","What is your favourite place in your school?"],
-[26,"School & Teachers","What is your favourite place to enjoy?"],
-[27,"School & Teachers","What school activity do you enjoy?"],
-[28,"School & Teachers","How do you prepare for an examination?"],
-[29,"Hobbies & Free Time","What is your hobby?"],
-[30,"Hobbies & Free Time","What do you like to do in your free time?"],
-[31,"Hobbies & Free Time","Do you like reading?"],
-[32,"Hobbies & Free Time","What kind of music do you like?"],
-[33,"Hobbies & Free Time","Do you like watching films?"],
-[34,"Hobbies & Free Time","What is your favourite game?"],
-[35,"Hobbies & Free Time","Do you enjoy playing sports?"],
-[36,"Hobbies & Free Time","What do you usually do at weekends?"],
-[37,"Food & Lifestyle","What is your favourite food?"],
-[38,"Food & Lifestyle","What is your favourite drink?"],
-[39,"Food & Lifestyle","Do you like cooking?"],
-[40,"Food & Lifestyle","What food do you dislike?"],
-[41,"Food & Lifestyle","Do you prefer eating at home or eating out?"],
-[42,"Food & Lifestyle","How do you stay healthy?"],
-[43,"Technology & Online Activities","How often do you use your smartphone?"],
-[44,"Technology & Online Activities","What do you use the Internet for?"],
-[45,"Technology & Online Activities","Do you like online shopping?"],
-[46,"Technology & Online Activities","What is your favourite social media platform?"],
-[47,"Technology & Online Activities","Do you think technology is important?"],
-[48,"Travel & Future","Do you like travelling?"],
-[49,"Travel & Future","Where would you like to go on holiday?"],
-[50,"Travel & Future","What is your dream for the future?"],
-[51,"Friends & Family","Who is your best friend?"],
-[52,"Friends & Family","What qualities do you look for in a friend?"],
-[53,"Friends & Family","What do you usually do with your friends?"],
-[54,"Friends & Family","How do you celebrate special occasions with your family?"],
-[55,"Friends & Family","How often do you spend time with your family?"],
-[56,"Friends & Family","What do you enjoy doing with your parents?"],
-[57,"Friends & Family","How do you help your family members?"],
-[58,"Friends & Family","What do you usually do when you have a problem?"],
-[59,"Friends & Family","How do you keep in touch with friends who live far away?"],
-[60,"Friends & Family","Why is it important to have good friends?"],
-[61,"Shopping & Money","Do you enjoy shopping? Why or why not?"],
-[62,"Shopping & Money","Where do you usually shop?"],
-[63,"Shopping & Money","Do you prefer online shopping or shopping in physical stores?"],
-[64,"Shopping & Money","What do you consider before buying something?"],
-[65,"Shopping & Money","What do you usually spend your pocket money on?"],
-[66,"Shopping & Money","Do you save money regularly?"],
-[67,"Shopping & Money","Have you ever bought something you regretted buying?"],
-[68,"Shopping & Money","What kind of gift would you like to buy for a friend?"],
-[69,"Shopping & Money","How can students avoid wasting money?"],
-[70,"Shopping & Money","Would you prefer to buy a cheap product or a high-quality product?"],
-[71,"Food & Dining","What is your favourite food?"],
-[72,"Food & Dining","What do you usually eat for lunch?"],
-[73,"Food & Dining","Do you prefer eating at home or eating out?"],
-[74,"Food & Dining","What is your favourite Malaysian dish?"],
-[75,"Food & Dining","Can you cook any dishes?"],
-[76,"Food & Dining","Who usually prepares meals in your home?"],
-[77,"Food & Dining","How often do you eat at restaurants?"],
-[78,"Food & Dining","What healthy food do you enjoy eating?"],
-[79,"Food & Dining","Have you ever tried food from another country?"],
-[80,"Food & Dining","What food would you recommend to a visitor to your hometown?"],
-[81,"Sports & Exercise","What is your favourite sport?"],
-[82,"Sports & Exercise","How often do you exercise?"],
-[83,"Sports & Exercise","Do you prefer playing sports or watching sports?"],
-[84,"Sports & Exercise","Who do you usually exercise with?"],
-[85,"Sports & Exercise","What physical activity do you do at school?"],
-[86,"Sports & Exercise","Have you ever taken part in a sports competition?"],
-[87,"Sports & Exercise","What sport would you like to learn?"],
-[88,"Sports & Exercise","Where do you usually exercise?"],
-[89,"Sports & Exercise","How can exercise benefit students?"],
-[90,"Sports & Exercise","What can schools do to encourage students to exercise?"],
-[91,"Technology & Everyday Life","What electronic device do you use most often?"],
-[92,"Technology & Everyday Life","How often do you use your mobile phone?"],
-[93,"Technology & Everyday Life","What do you usually do on the Internet?"],
-[94,"Technology & Everyday Life","How does technology help you with your studies?"],
-[95,"Technology & Everyday Life","Do you prefer reading printed books or reading on a screen?"],
-[96,"Technology & Everyday Life","What is your favourite social media platform?"],
-[97,"Technology & Everyday Life","How do you stay safe when using the Internet?"],
-[98,"Technology & Everyday Life","Have you ever used an educational app?"],
-[99,"Technology & Everyday Life","What would you do if you lost access to your mobile phone for a day?"],
-[100,"Technology & Everyday Life","How can students use technology responsibly?"]
+  [1, "Daily Routines", "What do you usually do after you wake up?"],
+  [2, "Daily Routines", "What do you usually do after coming back from school?"],
+  [3, "Daily Routines", "What time do you sleep?"],
+  [4, "Daily Routines", "What time do you wake up in the morning?"],
+  [5, "Daily Routines", "Who wakes you up in the morning?"],
+  [6, "Daily Routines", "What do you usually do before you sleep?"],
+  [7, "Food & Dining", "What do you usually eat for breakfast?"],
+  [8, "Food & Dining", "What do you usually eat for lunch?"],
+  [9, "Food & Dining", "What do you usually eat for dinner?"],
+  [10, "Leisure & Hobbies", "What do you usually do when you are bored?"],
+  [11, "Leisure & Hobbies", "What do you usually do on weekend?"],
+  [12, "Leisure & Hobbies", "Where do you usually go on your leisure time?"],
+  [13, "Leisure & Hobbies", "How do you spend your leisure time?"],
+  [14, "Family & Friends", "Where do you go to spend time with your friends?"],
+  [15, "Leisure & Hobbies", "What is your favourite day in a week?"],
+  [16, "Family & Friends", "What do you usually do with your family?"],
+  [17, "Family & Friends", "Where do you usually go for an outing with your family?"],
+  [18, "Leisure & Hobbies", "What type of clothes do you like to wear?"],
+  [19, "School & Teachers", "When do you usually do your homework?"],
+  [20, "Leisure & Hobbies", "Where do you usually go to relax?"],
+  [21, "Leisure & Hobbies", "What do you usually do to relax?"],
+  [22, "Money & Shopping", "How do you spend your pocket money?"],
+  [23, "Exercise & Health", "Where do you go to exercise?"],
+  [24, "Leisure & Hobbies", "What is your hobby?"],
+  [25, "Leisure & Hobbies", "Where do you go to do your hobby?"],
+  [26, "Family & Friends", "How many siblings do you have?"],
+  [27, "Family & Friends", "What do you usually do with your siblings?"],
+  [28, "Family & Friends", "Where do you usually go with your siblings?"],
+  [29, "Daily Routines", "What do you plan to do this weekend?"],
+  [30, "Daily Routines", "Where do you plan to go this weekend?"],
+  [31, "School & Teachers", "What do you plan to do after the examinations?"],
+  [32, "Travel & Future", "What country would you like to visit someday?"],
+  [33, "School & Teachers", "What subject do you like at school?"],
+  [34, "School & Teachers", "What club do you join at school?"],
+  [35, "Family & Friends", "What do you like to do with your best friend?"],
+  [36, "Family & Friends", "Where do you like to go with your best friend?"],
+  [37, "School & Teachers", "What place do you like to go in school?"],
+  [38, "Food & Dining", "What do you usually eat at the canteen?"],
+  [39, "Food & Dining", "What food do you want the canteen to sell?"],
+  [40, "Leisure & Hobbies", "What kind of music do you listen to?"],
+  [41, "Exercise & Health", "What sport do you like to play?"],
+  [42, "Leisure & Hobbies", "What book do you like to read?"],
+  [43, "Travel & Future", "Which country do you plan to go in the future?"],
+  [44, "School & Teachers", "How do you help your teachers at school?"],
+  [45, "Money & Shopping", "Where do you go to spend your pocket money?"],
+  [46, "Family & Friends", "How often do you go out with your family?"],
+  [47, "Exercise & Health", "How often do you exercise in a week?"],
+  [48, "Technology & Everyday Life", "How do you use your smartphone?"],
+  [49, "People & Culture", "Who would you want to meet someday?"],
+  [50, "People & Culture", "Who is your idol?"],
+  [51, "Family & Friends", "Who is your favourite family member?"],
+  [52, "Family & Friends", "Which pet would you like to own?"],
+  [53, "Leisure & Hobbies", "Which hobby would you like to try?"],
+  [54, "Money & Shopping", "Where do you go to buy clothes?"],
+  [55, "Travel & Future", "Where would you like to live when you are older?"],
+  [56, "Daily Routines", "How do you get ready for school?"],
+  [57, "Leisure & Hobbies", "When do you usually watch the television?"],
+  [58, "Daily Routines", "What chores do you like to do at home?"],
+  [59, "Daily Routines", "What is your favourite time of a day?"],
+  [60, "School & Teachers", "What do you love about your teachers?"],
+  [61, "Family & Friends", "What do you usually do with your family on weekends?"],
+  [62, "Food & Dining", "What do you like to eat for breakfast?"],
+  [63, "Food & Dining", "What do you like to eat at the canteen?"],
+  [64, "Money & Shopping", "Where do you save your pocket money?"],
+  [65, "Exercise & Health", "What sport would you want to try?"],
+  [66, "Money & Shopping", "Where do you go to shop?"],
+  [67, "Daily Routines", "When do you do the laundry?"],
+  [68, "Daily Routines", "What do you usually wear when you go out?"],
+  [69, "Daily Routines", "What do you see on your way to school?"],
+  [70, "Daily Routines", "What do you see on your way from school?"],
+  [71, "Family & Friends", "Where do you go to celebrate your birthday?"],
+  [72, "Daily Routines", "What do you like to do when you are stressed?"],
+  [73, "Family & Friends", "What pet do you own at home?"]
 ];
-const sampleAnswers = ["My name is Aina, and I am a secondary school student.", "I live in Kuching with my family.", "I come from Malaysia.", "I usually travel to school by car.", "I like my hometown because the people are friendly.", "After school, I usually finish my homework and relax.", "My favourite day is Saturday because I have more free time.", "My favourite month is December because I enjoy the holidays.", "I am good at drawing because I enjoy being creative.", "I would like to be a teacher in the future.", "There are five people in my family.", "Yes, I have one brother and one sister.", "I am closest to my mother because I can talk to her easily.", "I usually watch television or have dinner with my family.", "My best friend is Sara because she is kind and helpful.", "I like my best friend because she always supports me.", "I usually chat and play games with my friends.", "A good friend should be honest, kind, and trustworthy.", "My favourite subject is English because I enjoy learning languages.", "I find Mathematics difficult because some topics are challenging.", "My favourite teacher is my English teacher because she is encouraging.", "My favourite teacher teaches English.", "I like my favourite teacher because she explains lessons clearly.", "I show appreciation to my teacher by thanking her and working hard.", "My favourite place in school is the library because it is peaceful.", "My favourite place to relax is the school garden.", "I enjoy school sports activities because they are fun and healthy.", "I prepare for examinations by revising my notes and doing practice questions.", "My hobby is reading because I enjoy discovering new ideas.", "In my free time, I usually listen to music or watch videos.", "Yes, I like reading because it helps me learn new things.", "I like pop music because it is catchy and relaxing.", "Yes, I enjoy watching films, especially comedies.", "My favourite game is badminton because it keeps me active.", "Yes, I enjoy playing sports because they are fun and healthy.", "At weekends, I usually rest, do homework, and spend time with my family.", "My favourite food is nasi lemak because I love its rich flavour.", "My favourite drink is iced lemon tea because it is refreshing.", "Yes, I like cooking because I enjoy trying simple recipes.", "I dislike bitter gourd because I do not enjoy its taste.", "I prefer eating at home because it is comfortable and affordable.", "I stay healthy by exercising regularly and eating balanced meals.", "I use my smartphone every day to study and communicate with friends.", "I use the Internet to find information and complete schoolwork.", "Yes, I like online shopping because it is convenient.", "My favourite social media platform is YouTube because I enjoy watching useful videos.", "Yes, technology is important because it makes learning and communication easier.", "Yes, I like travelling because I enjoy exploring new places.", "I would like to visit Japan because I want to experience its culture.", "My dream is to have a successful career and make my family proud.", "My best friend is Sara because she is caring and reliable.", "I look for kindness, honesty, and a good sense of humour in a friend.", "I usually talk, eat, or play games with my friends.", "We celebrate special occasions by having a meal together.", "I spend time with my family almost every day, especially at dinner.", "I enjoy chatting with my parents because they give me good advice.", "I help my family by doing household chores.", "When I have a problem, I talk to someone I trust.", "I keep in touch with distant friends through messages and video calls.", "Good friends are important because they support us during difficult times.", "Yes, I enjoy shopping because I like finding useful things.", "I usually shop at nearby malls or supermarkets.", "I prefer online shopping because it is convenient and offers many choices.", "Before buying something, I compare the price, quality, and usefulness.", "I usually spend my pocket money on food and school supplies.", "Yes, I save money regularly so I can buy things I need later.", "Yes, I once bought an item I regretted because I did not need it.", "I would buy my friend a book because it is thoughtful and useful.", "Students can avoid wasting money by making a budget and comparing prices.", "I prefer a high-quality product because it usually lasts longer.", "My favourite food is chicken rice because it is tasty and filling.", "I usually eat rice with chicken or vegetables for lunch.", "I prefer eating at home because home-cooked food is healthier.", "My favourite Malaysian dish is laksa because I love its flavourful broth.", "Yes, I can cook simple dishes such as fried rice.", "My parents usually prepare meals at home.", "I eat at restaurants about once or twice a month.", "I enjoy eating fruits and vegetables because they help me stay healthy.", "Yes, I have tried Japanese food, and I enjoyed the sushi.", "I would recommend laksa to visitors because it is a popular local dish.", "My favourite sport is badminton because it is exciting and energetic.", "I exercise two or three times a week to stay fit.", "I prefer playing sports because I enjoy being active.", "I usually exercise with my friends because it is more fun.", "At school, I usually take part in physical education activities.", "Yes, I have taken part in a school sports competition.", "I would like to learn swimming because it is useful and enjoyable.", "I usually exercise at the school field or nearby park.", "Exercise benefits students by improving their health and reducing stress.", "Schools can encourage exercise by organising fun sports and outdoor activities.", "The electronic device I use most often is my smartphone.", "I use my mobile phone every day for learning and communication.", "I usually use the Internet to study, watch videos, and chat with friends.", "Technology helps me study by giving me quick access to learning resources.", "I prefer printed books because they are easier on my eyes.", "My favourite social media platform is YouTube because I can learn and relax.", "I stay safe online by using strong passwords and avoiding suspicious links.", "Yes, I have used educational apps to practise English and Mathematics.", "If I lost my phone for a day, I would read, exercise, and spend time with family.", "Students can use technology responsibly by protecting their privacy and limiting screen time."];
+const sampleAnswers = [
+  "After I wake up, I wash up and get ready for the day.",
+  "After school, I have a snack and finish my homework.",
+  "I usually go to sleep at about ten o’clock.",
+  "I usually wake up at six in the morning.",
+  "My mother usually wakes me up for school.",
+  "Before I sleep, I brush my teeth and read for a few minutes.",
+  "I usually have bread and an egg for breakfast.",
+  "I usually eat rice with chicken and vegetables for lunch.",
+  "I usually have a home-cooked meal with my family.",
+  "When I am bored, I listen to music or watch a short video.",
+  "At the weekend, I usually rest and spend time with my family.",
+  "I usually go to the park during my leisure time.",
+  "I spend my leisure time reading and listening to music.",
+  "I usually meet my friends at a nearby café or park.",
+  "Saturday is my favourite day because I can relax.",
+  "I usually watch a film or have dinner with my family.",
+  "We often go to a shopping centre for a family outing.",
+  "I like wearing comfortable clothes such as a T-shirt and jeans.",
+  "I usually do my homework after I have had a short rest.",
+  "I usually relax in my bedroom because it is quiet.",
+  "I listen to calm music to help me relax.",
+  "I spend some of my pocket money on snacks and save the rest.",
+  "I usually exercise at the park near my home.",
+  "My hobby is drawing because it lets me be creative.",
+  "I usually draw at home in a quiet place.",
+  "I have two siblings, an older sister and a younger brother.",
+  "My siblings and I usually play games or chat together.",
+  "We sometimes go to the park or a shopping centre together.",
+  "This weekend, I plan to finish my homework and visit my cousin.",
+  "I plan to go to the library this weekend.",
+  "After the examinations, I plan to rest and spend time with my family.",
+  "I would like to visit Japan to experience its culture.",
+  "I like English because I enjoy learning new words.",
+  "I join the English Language Club at school.",
+  "My best friend and I like chatting and playing badminton.",
+  "I like going to the park with my best friend.",
+  "I like going to the library because it is peaceful.",
+  "I usually buy noodles or rice at the school canteen.",
+  "I would like the canteen to sell more fresh fruit.",
+  "I listen to pop music because it is cheerful and catchy.",
+  "I like playing badminton because it is fun and keeps me active.",
+  "I like reading mystery books because they keep me curious.",
+  "I hope to travel to South Korea in the future.",
+  "I help my teachers by handing out books and keeping the classroom tidy.",
+  "I usually spend my pocket money at the school canteen.",
+  "I go out with my family about once a week.",
+  "I exercise about three times a week to stay healthy.",
+  "I use my smartphone to contact my family and do schoolwork.",
+  "I would like to meet my favourite author and ask about her books.",
+  "My mother is my idol because she is hardworking and caring.",
+  "My grandmother is my favourite because she always makes me laugh.",
+  "I would like to own a cat because cats are gentle companions.",
+  "I would like to try baking because I enjoy making sweet treats.",
+  "I usually buy clothes at a shopping centre near my home.",
+  "I would like to live in a peaceful town when I am older.",
+  "I get ready by showering, dressing, and packing my school bag.",
+  "I usually watch television after dinner.",
+  "I like watering the plants because it is simple and relaxing.",
+  "My favourite time is the evening because I can unwind after school.",
+  "I love that my teachers are patient and encourage me to do my best.",
+  "At weekends, we often visit relatives or eat out together.",
+  "I like eating nasi lemak for breakfast because it is tasty.",
+  "I like eating fried noodles at the school canteen.",
+  "I keep my savings in a money box at home.",
+  "I would like to try swimming because it is a useful skill.",
+  "I usually go to the mall to shop with my family.",
+  "I usually help with the laundry at the weekend.",
+  "I usually wear a comfortable shirt and trousers when I go out.",
+  "On my way to school, I see shops, houses, and other students.",
+  "On my way home, I often see buses and people leaving work.",
+  "I usually celebrate my birthday at home with my family.",
+  "When I feel stressed, I take a short walk and listen to music.",
+  "I have a small cat at home, and I enjoy playing with it."
+];
 const colors=["#ff6b7a","#ffb547","#55c878","#49a9ed","#a78bfa","#f48fb1","#4dc9c0","#f28c52"];
 const canvas=document.getElementById('wheel'),ctx=canvas.getContext('2d');
 const categorySelect=document.getElementById('categorySelect');
@@ -261,11 +308,36 @@ function chooseRandom(){
  if(!available.length){used.clear();available=p;document.getElementById('counter').textContent="All questions used — starting a fresh round!"}
  const q=available[Math.floor(Math.random()*available.length)];showQuestion(q);drawWheel();
 }
+let audioContext=null;
+function playSpinSound(){
+ try{
+  const AudioContextClass=window.AudioContext||window.webkitAudioContext;
+  if(!AudioContextClass)return;
+  if(!audioContext)audioContext=new AudioContextClass();
+  if(audioContext.state==='suspended')audioContext.resume();
+  const started=performance.now(),total=2600;
+  function tick(){
+   const elapsed=performance.now()-started;
+   if(elapsed>=total||!spinning)return;
+   const now=audioContext.currentTime,progress=elapsed/total;
+   const oscillator=audioContext.createOscillator(),gain=audioContext.createGain();
+   oscillator.type='sine';
+   oscillator.frequency.setValueAtTime(520-180*progress,now);
+   gain.gain.setValueAtTime(0.0001,now);
+   gain.gain.exponentialRampToValueAtTime(0.055,now+0.008);
+   gain.gain.exponentialRampToValueAtTime(0.0001,now+0.055);
+   oscillator.connect(gain);gain.connect(audioContext.destination);
+   oscillator.start(now);oscillator.stop(now+0.06);
+   setTimeout(tick,35+145*progress*progress);
+  }
+  tick();
+ }catch(error){/* Audio remains optional when the browser blocks it. */}
+}
 function spin(){
  if(spinning)return;const p=pool();if(!p.length)return;
  let available=p.filter(q=>!used.has(q[0]));if(!available.length){used.clear();available=p}
  const chosen=available[Math.floor(Math.random()*available.length)];
- spinning=true;document.getElementById('spinBtn').disabled=true;
+ spinning=true;playSpinSound();document.getElementById('spinBtn').disabled=true;
  const targetIndex=p.findIndex(q=>q[0]===chosen[0]),step=2*Math.PI/p.length;
  // Pointer is at top. Land selected slice midpoint at top.
  const desired=-(targetIndex+.5)*step;
